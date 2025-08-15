@@ -1,13 +1,19 @@
 class MedicationReminder {
     constructor() {
         this.medications = [];
+        this.db = new MedicationDB();
         this.init();
     }
 
-    init() {
+    async init() {
+        try {
+            await this.db.init();
+        } catch (error) {
+            console.warn('IndexedDB not available, using LocalStorage');
+        }
         this.setupEventListeners();
         this.requestNotificationPermission();
-        this.loadMedications();
+        await this.loadMedications();
         this.updateMedicationList();
     }
 
@@ -39,7 +45,7 @@ class MedicationReminder {
         }
     }
 
-    addMedication() {
+    async addMedication() {
         const name = document.getElementById('medName').value;
         const dosage = document.getElementById('dosage').value;
         const date = document.getElementById('medDate').value;
@@ -57,7 +63,7 @@ class MedicationReminder {
         };
 
         this.medications.push(medication);
-        this.saveMedications();
+        await this.saveMedications();
         this.scheduleNotification(medication);
         this.updateMedicationList();
         this.showPage('dashboard');
@@ -105,11 +111,11 @@ class MedicationReminder {
         });
     }
 
-    markAsTaken(id) {
+    async markAsTaken(id) {
         const medication = this.medications.find(med => med.id === id);
         if (medication) {
             medication.taken = true;
-            this.saveMedications();
+            await this.saveMedications();
             this.updateMedicationList();
         }
     }
@@ -130,14 +136,35 @@ class MedicationReminder {
         }
     }
 
-    saveMedications() {
-        localStorage.setItem('medications', JSON.stringify(this.medications));
+    async saveMedications() {
+        try {
+            if (this.db.db) {
+                for (const med of this.medications) {
+                    await this.db.updateMedication(med);
+                }
+            } else {
+                localStorage.setItem('medications', JSON.stringify(this.medications));
+            }
+        } catch (error) {
+            localStorage.setItem('medications', JSON.stringify(this.medications));
+        }
     }
 
-    loadMedications() {
-        const saved = localStorage.getItem('medications');
-        if (saved) {
-            this.medications = JSON.parse(saved);
+    async loadMedications() {
+        try {
+            if (this.db.db) {
+                this.medications = await this.db.getAllMedications();
+            } else {
+                const saved = localStorage.getItem('medications');
+                if (saved) {
+                    this.medications = JSON.parse(saved);
+                }
+            }
+        } catch (error) {
+            const saved = localStorage.getItem('medications');
+            if (saved) {
+                this.medications = JSON.parse(saved);
+            }
         }
     }
 }
