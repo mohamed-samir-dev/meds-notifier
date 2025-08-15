@@ -15,15 +15,17 @@ A professional, responsive medication reminder web application with notification
 
 ## Demo
 
-🔗 **Live Demo**: [GitHub Pages Link](https://yourusername.github.io/medication-reminder)
+🔗 **Live Demo**: [GitHub Pages Link](https://meds-notifier.vercel.app/)
 
 ## Screenshots
 
 ### Desktop View
-![Desktop Screenshot](screenshots/desktop.png)
+
+![Desktop Screenshot](screencapture-127-0-0-1-5500-index-html-2025-08-15-16_32_25.png)
 
 ### Mobile View
-![Mobile Screenshot](screenshots/mobile.png)
+
+![Mobile Screenshot](Screenshot 2025-08-15 163412.png)
 
 ## Technologies Used
 
@@ -38,18 +40,21 @@ A professional, responsive medication reminder web application with notification
 ## Installation & Setup
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/yourusername/medication-reminder.git
    cd medication-reminder
    ```
 
 2. **Open in browser**:
+
    - Simply open `index.html` in your web browser
    - Or serve using a local server:
+
      ```bash
      # Using Python
      python -m http.server 8000
-     
+
      # Using Node.js
      npx serve .
      ```
@@ -61,6 +66,7 @@ A professional, responsive medication reminder web application with notification
 ## Usage
 
 ### Adding Medications
+
 1. Fill in the medication form with:
    - Medication name
    - Dosage information
@@ -68,17 +74,20 @@ A professional, responsive medication reminder web application with notification
 2. Click "Add Medication"
 
 ### Managing Medications
+
 - **View All**: See complete list of medications
 - **Filter**: Use tabs to view upcoming or past medications
 - **Google Calendar**: Click the calendar button to add events
 - **Delete**: Remove medications you no longer need
 
 ### Notifications
+
 - Notifications appear exactly at the scheduled time
 - Works even when the browser tab is in the background
 - Includes medication name, dosage, and time information
 
 ### Language Toggle
+
 - Click the language toggle button (AR/EN) in the header
 - Switches between Arabic (RTL) and English (LTR)
 - All text and layout direction changes automatically
