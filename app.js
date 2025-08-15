@@ -41,7 +41,12 @@ class MedicationReminder {
 
     async requestNotificationPermission() {
         if ('Notification' in window) {
-            await Notification.requestPermission();
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                console.log('Notification permission granted');
+            } else {
+                alert('يرجى السماح بالإشعارات لتلقي تذكيرات الأدوية');
+            }
         }
     }
 
@@ -78,16 +83,82 @@ class MedicationReminder {
         if (timeUntil > 0) {
             setTimeout(() => {
                 this.showNotification(medication);
+                this.scheduleNextRepeat(medication);
             }, timeUntil);
+        }
+    }
+
+    scheduleNextRepeat(medication) {
+        if (medication.repeat === 'daily') {
+            const nextDate = new Date(medication.date);
+            nextDate.setDate(nextDate.getDate() + 1);
+            const nextMed = {
+                ...medication,
+                id: Date.now(),
+                date: nextDate.toISOString().split('T')[0],
+                taken: false
+            };
+            this.medications.push(nextMed);
+            this.saveMedications();
+            this.scheduleNotification(nextMed);
+        } else if (medication.repeat === 'weekly') {
+            const nextDate = new Date(medication.date);
+            nextDate.setDate(nextDate.getDate() + 7);
+            const nextMed = {
+                ...medication,
+                id: Date.now(),
+                date: nextDate.toISOString().split('T')[0],
+                taken: false
+            };
+            this.medications.push(nextMed);
+            this.saveMedications();
+            this.scheduleNotification(nextMed);
         }
     }
 
     showNotification(medication) {
         if (Notification.permission === 'granted') {
-            new Notification(`وقت تناول ${medication.name}`, {
-                body: `الجرعة: ${medication.dosage}`,
-                icon: 'icon-192.png'
+            const notification = new Notification(`وقت تناول ${medication.name}`, {
+                body: `الجرعة: ${medication.dosage}\nالوقت: ${medication.time}`,
+                icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiM0RjQ2RTUiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMTcgMjFWN2EyIDIgMCAwIDAtMi0ySDlhMiAyIDAgMCAwLTIgMnYxNGwyIDEuNSAyLTEuNSAyIDEuNSAyLTEuNSAyIDEuNVoiLz4KPHN0cm9rZSBkPSJNOSA5aDYiLz4KPHN0cm9rZSBkPSJNOSAxM2g2Ii8+CjwvcGF0aD4KPC9zdmc+Cjwvc3ZnPg==',
+                tag: `medication-${medication.id}`,
+                requireInteraction: true
             });
+            
+            // Play notification sound
+            this.playNotificationSound();
+            
+            // Vibrate on mobile devices
+            if ('vibrate' in navigator) {
+                navigator.vibrate([200, 100, 200]);
+            }
+            
+            // Auto-close after 10 seconds
+            setTimeout(() => {
+                notification.close();
+            }, 10000);
+        }
+    }
+    
+    playNotificationSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        } catch (error) {
+            console.log('Audio notification not supported');
         }
     }
 
