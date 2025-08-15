@@ -95,13 +95,22 @@ class MedicationReminder {
         const listContainer = document.getElementById('medicationList');
         listContainer.innerHTML = '';
 
-        this.medications.forEach(med => {
+        const activeMedications = this.medications.filter(med => !med.taken);
+        
+        if (activeMedications.length === 0) {
+            listContainer.innerHTML = '<p style="text-align: center; color: #6B7280;">لا توجد أدوية مجدولة</p>';
+            return;
+        }
+
+        activeMedications.forEach(med => {
             const medElement = document.createElement('div');
             medElement.className = 'medication-item';
+            const countdown = this.getCountdown(med);
             medElement.innerHTML = `
                 <h3>${med.name}</h3>
                 <p>الجرعة: ${med.dosage}</p>
                 <p>التاريخ: ${med.date} - الوقت: ${med.time}</p>
+                <p class="countdown" data-id="${med.id}">${countdown}</p>
                 <div class="medication-actions">
                     <button class="btn-small btn-taken" onclick="app.markAsTaken(${med.id})">تم التناول</button>
                     <button class="btn-small btn-calendar" onclick="app.addToCalendar(${med.id})">إضافة للتقويم</button>
@@ -109,6 +118,8 @@ class MedicationReminder {
             `;
             listContainer.appendChild(medElement);
         });
+        
+        this.startCountdownTimer();
     }
 
     async markAsTaken(id) {
@@ -166,6 +177,46 @@ class MedicationReminder {
                 this.medications = JSON.parse(saved);
             }
         }
+    }
+}
+
+    getCountdown(medication) {
+        const scheduledTime = new Date(`${medication.date}T${medication.time}`);
+        const now = new Date();
+        const diff = scheduledTime.getTime() - now.getTime();
+        
+        if (diff <= 0) {
+            return 'حان وقت التناول!';
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        if (days > 0) {
+            return `${days} يوم و ${hours} ساعة`;
+        } else if (hours > 0) {
+            return `${hours} ساعة و ${minutes} دقيقة`;
+        } else {
+            return `${minutes} دقيقة`;
+        }
+    }
+    
+    startCountdownTimer() {
+        if (this.countdownInterval) {
+            clearInterval(this.countdownInterval);
+        }
+        
+        this.countdownInterval = setInterval(() => {
+            const countdownElements = document.querySelectorAll('.countdown');
+            countdownElements.forEach(element => {
+                const medId = parseInt(element.dataset.id);
+                const medication = this.medications.find(med => med.id === medId);
+                if (medication) {
+                    element.textContent = this.getCountdown(medication);
+                }
+            });
+        }, 60000); // Update every minute
     }
 }
 

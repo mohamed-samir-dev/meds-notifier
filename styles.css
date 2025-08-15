@@ -115,6 +115,16 @@ input:focus, select:focus {
     margin-bottom: 10px;
 }
 
+.countdown {
+    background: #FEF3C7;
+    color: #92400E;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px !important;
+}
+
 .medication-actions {
     display: flex;
     gap: 10px;
