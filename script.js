@@ -11,6 +11,7 @@ class MedicationReminder {
                 dosage: 'الجرعة',
                 date: 'التاريخ',
                 time: 'الوقت',
+                day: 'اليوم',
                 addMed: 'إضافة الدواء',
                 medList: 'قائمة الأدوية',
                 all: 'الكل',
@@ -23,7 +24,8 @@ class MedicationReminder {
                 upcomingStatus: 'قادم',
                 notificationTitle: 'تذكير الدواء',
                 notificationBody: 'حان وقت تناول',
-                enableNotifications: 'تفعيل الإشعارات'
+                enableNotifications: 'تفعيل الإشعارات',
+                days: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
             },
             en: {
                 title: 'Medication Reminder',
@@ -32,6 +34,7 @@ class MedicationReminder {
                 dosage: 'Dosage',
                 date: 'Date',
                 time: 'Time',
+                day: 'Day',
                 addMed: 'Add Medication',
                 medList: 'Medications List',
                 all: 'All',
@@ -44,7 +47,8 @@ class MedicationReminder {
                 upcomingStatus: 'Upcoming',
                 notificationTitle: 'Medication Reminder',
                 notificationBody: 'Time to take',
-                enableNotifications: 'Enable Notifications'
+                enableNotifications: 'Enable Notifications',
+                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
             }
         };
         this.init();
@@ -133,6 +137,7 @@ class MedicationReminder {
                     <div class="medication-details">
                         <p><strong>${this.getCurrentTranslation().dosage}:</strong> ${med.dosage}</p>
                         <p><strong>${this.getCurrentTranslation().date}:</strong> ${med.date}</p>
+                        <p><strong>${this.getCurrentTranslation().day}:</strong> ${this.getCurrentTranslation().days[new Date(med.date).getDay()]}</p>
                         <p><strong>${this.getCurrentTranslation().time}:</strong> ${med.time}</p>
                     </div>
                     <div class="medication-actions">
