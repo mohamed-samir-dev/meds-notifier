@@ -23,9 +23,6 @@ A professional, responsive medication reminder web application with notification
 
 ![Desktop Screenshot](screencapture-127-0-0-1-5500-index-html-2025-08-15-16_32_25.png)
 
-### Mobile View
-
-![Mobile Screenshot](Screenshot 2025-08-15 163412.png)
 
 ## Technologies Used
 
