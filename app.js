@@ -206,16 +206,53 @@ class MedicationReminder {
         const medication = this.medications.find(med => med.id === id);
         if (medication) {
             const startDate = new Date(`${medication.date}T${medication.time}`);
-            const endDate = new Date(startDate.getTime() + 30 * 60000); // 30 minutes later
+            const endDate = new Date(startDate.getTime() + 15 * 60000); // 15 minutes later
             
             const formatDate = (date) => {
                 return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             };
 
-            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(medication.name)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(`الجرعة: ${medication.dosage}`)}`;
+            const title = `تذكير دواء: ${medication.name}`;
+            const details = `اسم الدواء: ${medication.name}\nالجرعة: ${medication.dosage}\nالوقت: ${medication.time}\n\nتذكير من تطبيق تذكير الأدوية`;
+            
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('منزل')}`;
+            
+            // Also generate .ics file as fallback
+            this.generateICSFile(medication, startDate, endDate);
             
             window.open(calendarUrl, '_blank');
         }
+    }
+    
+    generateICSFile(medication, startDate, endDate) {
+        const formatICSDate = (date) => {
+            return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+        
+        const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//Medication Reminder//AR',
+            'BEGIN:VEVENT',
+            `UID:${medication.id}@medicationreminder.app`,
+            `DTSTART:${formatICSDate(startDate)}`,
+            `DTEND:${formatICSDate(endDate)}`,
+            `SUMMARY:تذكير دواء: ${medication.name}`,
+            `DESCRIPTION:اسم الدواء: ${medication.name}\nالجرعة: ${medication.dosage}`,
+            'BEGIN:VALARM',
+            'TRIGGER:-PT5M',
+            'ACTION:DISPLAY',
+            `DESCRIPTION:وقت تناول ${medication.name}`,
+            'END:VALARM',
+            'END:VEVENT',
+            'END:VCALENDAR'
+        ].join('\r\n');
+        
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        // Store for potential download
+        medication.icsUrl = url;
     }
 
     async saveMedications() {
