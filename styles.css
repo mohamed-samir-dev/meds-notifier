@@ -5,16 +5,23 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     direction: rtl;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -34,6 +41,13 @@ header h1 {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    flex: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .page.active {
@@ -79,6 +93,10 @@ input, select {
     border-radius: 8px;
     font-size: 16px;
     text-align: right;
+    direction: rtl;
+    transition: border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 input:focus, select:focus {
@@ -102,6 +120,13 @@ input:focus, select:focus {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-right: 4px solid #4F46E5;
+}
+
+.medication-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .medication-item h3 {
@@ -161,4 +186,82 @@ input:focus, select:focus {
     .btn-secondary {
         width: 100%;
     }
+    
+    .medication-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-small {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .container {
+        padding: 5px;
+    }
+    
+    .page {
+        padding: 15px;
+        border-radius: 10px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .page {
+        background: #1F2937;
+        color: white;
+    }
+    
+    .medication-item {
+        background: #374151;
+        border-color: #4B5563;
+        color: white;
+    }
+    
+    input, select {
+        background: #374151;
+        border-color: #4B5563;
+        color: white;
+    }
+    
+    input::placeholder {
+        color: #9CA3AF;
+    }
+}
+
+/* RTL specific adjustments */
+[dir="rtl"] .medication-item {
+    border-right: 4px solid #4F46E5;
+    border-left: none;
+}
+
+[dir="ltr"] .medication-item {
+    border-left: 4px solid #4F46E5;
+    border-right: none;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Success animation */
+.success-animation {
+    animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
