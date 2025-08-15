@@ -12,9 +12,11 @@ class MedicationReminder {
             console.warn('IndexedDB not available, using LocalStorage');
         }
         this.setupEventListeners();
+        this.registerServiceWorker();
         this.requestNotificationPermission();
         await this.loadMedications();
         this.updateMedicationList();
+        this.scheduleExistingMedications();
     }
 
     setupEventListeners() {
@@ -253,6 +255,25 @@ class MedicationReminder {
         
         // Store for potential download
         medication.icsUrl = url;
+    }
+    
+    async registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            try {
+                const registration = await navigator.serviceWorker.register('/service-worker.js');
+                console.log('Service Worker registered:', registration);
+            } catch (error) {
+                console.log('Service Worker registration failed:', error);
+            }
+        }
+    }
+    
+    scheduleExistingMedications() {
+        this.medications.forEach(medication => {
+            if (!medication.taken) {
+                this.scheduleNotification(medication);
+            }
+        });
     }
 
     async saveMedications() {
