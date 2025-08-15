@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تذكير الأدوية</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4F46E5">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>تذكير الأدوية</h1>
+        </header>
+        
+        <main>
+            <div id="dashboard" class="page active">
+                <button id="addMedBtn" class="btn-primary">إضافة دواء</button>
+                <div id="medicationList" class="medication-list"></div>
+            </div>
+            
+            <div id="addMedForm" class="page">
+                <h2>إضافة دواء جديد</h2>
+                <form id="medicationForm">
+                    <input type="text" id="medName" placeholder="اسم الدواء" required>
+                    <input type="text" id="dosage" placeholder="الجرعة" required>
+                    <input type="date" id="medDate" required>
+                    <input type="time" id="medTime" required>
+                    <select id="repeatInterval">
+                        <option value="none">مرة واحدة</option>
+                        <option value="daily">يومياً</option>
+                        <option value="weekly">أسبوعياً</option>
+                    </select>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">حفظ</button>
+                        <button type="button" id="cancelBtn" class="btn-secondary">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
