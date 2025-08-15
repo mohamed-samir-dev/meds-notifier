@@ -78,7 +78,7 @@ class MedicationReminder {
     }
 
     scheduleNotification(medication) {
-        const scheduledTime = new Date(`${medication.date}T${medication.time}`);
+        const scheduledTime = this.createLocalDateTime(medication.date, medication.time);
         const now = new Date();
         const timeUntil = scheduledTime.getTime() - now.getTime();
 
@@ -89,11 +89,20 @@ class MedicationReminder {
             }, timeUntil);
         }
     }
+    
+    createLocalDateTime(date, time) {
+        // Create date in user's local timezone
+        const [year, month, day] = date.split('-').map(Number);
+        const [hours, minutes] = time.split(':').map(Number);
+        return new Date(year, month - 1, day, hours, minutes);
+    }
 
     scheduleNextRepeat(medication) {
         if (medication.repeat === 'daily') {
-            const nextDate = new Date(medication.date);
+            const currentDate = this.createLocalDateTime(medication.date, medication.time);
+            const nextDate = new Date(currentDate);
             nextDate.setDate(nextDate.getDate() + 1);
+            
             const nextMed = {
                 ...medication,
                 id: Date.now(),
@@ -104,8 +113,10 @@ class MedicationReminder {
             this.saveMedications();
             this.scheduleNotification(nextMed);
         } else if (medication.repeat === 'weekly') {
-            const nextDate = new Date(medication.date);
+            const currentDate = this.createLocalDateTime(medication.date, medication.time);
+            const nextDate = new Date(currentDate);
             nextDate.setDate(nextDate.getDate() + 7);
+            
             const nextMed = {
                 ...medication,
                 id: Date.now(),
@@ -207,17 +218,28 @@ class MedicationReminder {
     addToCalendar(id) {
         const medication = this.medications.find(med => med.id === id);
         if (medication) {
-            const startDate = new Date(`${medication.date}T${medication.time}`);
+            const startDate = this.createLocalDateTime(medication.date, medication.time);
             const endDate = new Date(startDate.getTime() + 15 * 60000); // 15 minutes later
             
-            const formatDate = (date) => {
+            // Convert to UTC for calendar systems
+            const formatDateUTC = (date) => {
                 return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            };
+            
+            // Format for local display
+            const formatDateLocal = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}${month}${day}T${hours}${minutes}00`;
             };
 
             const title = `تذكير دواء: ${medication.name}`;
-            const details = `اسم الدواء: ${medication.name}\nالجرعة: ${medication.dosage}\nالوقت: ${medication.time}\n\nتذكير من تطبيق تذكير الأدوية`;
+            const details = `اسم الدواء: ${medication.name}\nالجرعة: ${medication.dosage}\nالوقت: ${medication.time}\nالمنطقة الزمنية: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n\nتذكير من تطبيق تذكير الأدوية`;
             
-            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('منزل')}`;
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formatDateUTC(startDate)}/${formatDateUTC(endDate)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('منزل')}&ctz=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone)}`;
             
             // Also generate .ics file as fallback
             this.generateICSFile(medication, startDate, endDate);
@@ -310,7 +332,7 @@ class MedicationReminder {
 }
 
     getCountdown(medication) {
-        const scheduledTime = new Date(`${medication.date}T${medication.time}`);
+        const scheduledTime = this.createLocalDateTime(medication.date, medication.time);
         const now = new Date();
         const diff = scheduledTime.getTime() - now.getTime();
         
