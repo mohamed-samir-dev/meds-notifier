@@ -333,6 +333,73 @@ class MedicationReminder {
         document.getElementById('upcomingMeds').textContent = upcomingMeds;
         document.getElementById('expiredMeds').textContent = expiredMeds;
         document.getElementById('todayMeds').textContent = todayMeds;
+        
+        this.drawStatusChart();
+        this.drawWeeklyChart();
+    }
+
+    drawStatusChart() {
+        const canvas = document.getElementById('statusChart');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        const now = new Date();
+        const upcoming = this.medications.filter(med => new Date(med.datetime) > now).length;
+        const expired = this.medications.filter(med => new Date(med.datetime) <= now).length;
+        
+        const total = upcoming + expired;
+        if (total === 0) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+            return;
+        }
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 80;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const upcomingAngle = (upcoming / total) * 2 * Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, 0, upcomingAngle);
+        ctx.fillStyle = '#48bb78';
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, upcomingAngle, 2 * Math.PI);
+        ctx.fillStyle = '#f56565';
+        ctx.fill();
+    }
+
+    drawWeeklyChart() {
+        const container = document.getElementById('weeklyChart');
+        if (!container) return;
+        
+        const days = this.getCurrentTranslation().days;
+        const weekData = new Array(7).fill(0);
+        
+        this.medications.forEach(med => {
+            const dayOfWeek = new Date(med.date).getDay();
+            weekData[dayOfWeek]++;
+        });
+        
+        const maxCount = Math.max(...weekData, 1);
+        
+        container.innerHTML = weekData.map((count, index) => {
+            const height = (count / maxCount) * 150;
+            return `
+                <div class="day-bar">
+                    <div class="bar" style="height: ${height}px" title="${count} medications"></div>
+                    <div class="day-label">${days[index].substring(0, 3)}</div>
+                </div>
+            `;
+        }).join('');
     }
 }
 
