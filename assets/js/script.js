@@ -64,6 +64,7 @@ class MedicationReminder {
                 todayMeds: 'Today\'s Medications'
             }
         };
+        this.currentSection = 'medications';
         this.init();
     }
 
@@ -73,6 +74,7 @@ class MedicationReminder {
         this.displayMedications();
         this.scheduleNotifications();
         this.updateLanguage();
+        this.updateDashboard();
     }
 
     setupEventListeners() {
