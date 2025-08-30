@@ -90,6 +90,14 @@ header h1 {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.form-group small {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.875rem;
+    color: #718096;
+    font-style: italic;
+}
+
 .btn-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;

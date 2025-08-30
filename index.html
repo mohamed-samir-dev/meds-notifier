@@ -30,20 +30,24 @@
                 <h2>إضافة دواء جديد</h2>
                 <form id="medicationForm">
                     <div class="form-group">
-                        <label for="medName">اسم الدواء</label>
-                        <input type="text" id="medName" required>
+                        <label for="medName">اسم الدواء *</label>
+                        <input type="text" id="medName" required aria-describedby="medName-help" placeholder="مثال: باراسيتامول">
+                        <small id="medName-help">أدخل اسم الدواء بوضوح</small>
                     </div>
                     <div class="form-group">
-                        <label for="medDosage">الجرعة</label>
-                        <input type="text" id="medDosage" required>
+                        <label for="medDosage">الجرعة *</label>
+                        <input type="text" id="medDosage" required aria-describedby="medDosage-help" placeholder="مثال: 500 مجم">
+                        <small id="medDosage-help">حدد كمية الجرعة</small>
                     </div>
                     <div class="form-group">
-                        <label for="medDate">التاريخ</label>
-                        <input type="date" id="medDate" required>
+                        <label for="medDate">التاريخ *</label>
+                        <input type="date" id="medDate" required aria-describedby="medDate-help">
+                        <small id="medDate-help">اختر تاريخ تناول الدواء</small>
                     </div>
                     <div class="form-group">
-                        <label for="medTime">الوقت</label>
-                        <input type="time" id="medTime" required>
+                        <label for="medTime">الوقت *</label>
+                        <input type="time" id="medTime" required aria-describedby="medTime-help">
+                        <small id="medTime-help">حدد وقت تناول الدواء</small>
                     </div>
                     <button type="submit" class="btn-primary">
                         <i class="fas fa-plus"></i> إضافة الدواء
