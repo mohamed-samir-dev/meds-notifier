@@ -359,10 +359,10 @@ class MedicationReminder {
         if (addMedSection) addMedSection.textContent = t.addNew;
         
         const labels = {
-            'medName': t.medName,
-            'medDosage': t.dosage,
-            'medDate': t.date,
-            'medTime': t.time
+            'medName': t.medName + ' *',
+            'medDosage': t.dosage + ' *',
+            'medDate': t.date + ' *',
+            'medTime': t.time + ' *'
         };
         
         Object.entries(labels).forEach(([id, text]) => {
