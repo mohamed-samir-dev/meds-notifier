@@ -28,9 +28,9 @@
     ],
     "shortcuts": [
         {
-            "name": "Add Medication",
-            "short_name": "Add Med",
-            "description": "Quickly add a new medication reminder",
+            "name": "Add Medication | إضافة دواء",
+            "short_name": "Add Med | إضافة",
+            "description": "Quickly add a new medication reminder | إضافة تذكير دواء جديد بسرعة",
             "url": "/?action=add",
             "icons": [
                 {
@@ -41,9 +41,9 @@
             ]
         },
         {
-            "name": "Dashboard",
-            "short_name": "Dashboard",
-            "description": "View medication statistics and analytics",
+            "name": "Dashboard | لوحة التحكم",
+            "short_name": "Dashboard | لوحة",
+            "description": "View medication statistics and analytics | عرض إحصائيات وتحليلات الأدوية",
             "url": "/?section=dashboard",
             "icons": [
                 {
