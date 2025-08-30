@@ -139,6 +139,7 @@ class MedicationReminder {
         this.scheduleNotifications();
         this.updateLanguage();
         this.updateDashboard();
+        this.handleURLParams();
     }
 
     setupEventListeners() {
@@ -640,6 +641,21 @@ class MedicationReminder {
                 });
             }, parseInt(time) * 60000);
             alert(this.getCurrentTranslation().reminderSet.replace('{time}', time));
+        }
+    }
+
+    handleURLParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+        const section = urlParams.get('section');
+        
+        if (section === 'dashboard') {
+            this.switchSection('dashboard');
+        } else if (action === 'add') {
+            this.switchSection('medications');
+            setTimeout(() => {
+                document.getElementById('medName').focus();
+            }, 100);
         }
     }
 }
