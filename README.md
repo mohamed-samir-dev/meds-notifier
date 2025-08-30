@@ -3,8 +3,8 @@
 <div align="center">
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Website-blue?style=for-the-badge)](https://meds-notifier.vercel.app/)
-[![PWA Ready](https://img.shields.io/badge/📱_PWA-Ready-green?style=for-the-badge)](#)
-[![Bilingual](https://img.shields.io/badge/🌍_Languages-AR_|_EN-orange?style=for-the-badge)](#)
+[![PWA Ready](https://img.shields.io/badge/📱_PWA-Ready-green?style=for-the-badge)](https://meds-notifier.vercel.app/)
+[![Bilingual](https://img.shields.io/badge/🌍_Languages-AR_|_EN-orange?style=for-the-badge)](https://meds-notifier.vercel.app/)
 
 _A professional, responsive medication reminder web application with advanced dashboard analytics, notifications, and Google Calendar integration._
 
@@ -18,9 +18,9 @@ _A professional, responsive medication reminder web application with advanced da
 
 <div align="center">
 
-|                                  Desktop View                                   |                                  Mobile View                                  |                                   Dashboard                                    |
-| :-----------------------------------------------------------------------------: | :---------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
-| ![Desktop](https://via.placeholder.com/300x200/667eea/ffffff?text=Desktop+View) | ![Mobile](https://via.placeholder.com/200x300/48bb78/ffffff?text=Mobile+View) | ![Dashboard](https://via.placeholder.com/300x200/ed8936/ffffff?text=Dashboard) |
+|                                       Desktop View                                        |                                       Mobile View                                       |                                             Dashboard                                              |
+| :---------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: |
+| ![Desktop](assets/images/screencapture-meds-notifier-vercel-app-2025-08-30-13_51_13.png>) | ![Mobile](assets/images/screencapture-meds-notifier-vercel-app-2025-08-30-13_48_52.png) | ![Dashboard](<assets/images/screencapture-meds-notifier-vercel-app-2025-08-30-13_48_12%20(1).png>) |
 
 </div>
 
@@ -107,7 +107,7 @@ meds-notifier/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/meds-notifier.git
+git clone git@github.com:mohamed-samir-dev/meds-notifier.git
 cd meds-notifier
 
 # Serve locally (choose one method)
@@ -214,7 +214,7 @@ git push origin feature/amazing-feature
 
 <div align="center">
 
-![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/meds-notifier?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/mohamed-samir-dev/meds-notifier?style=flat-square)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/mohamed-samir-dev/meds-notifier?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mohamed-samir-dev/meds-notifier?style=flat-square)
 
@@ -237,9 +237,9 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Need help?**
 
-[![Website](https://img.shields.io/badge/🌐_Visit-Website-blue?style=for-the-badge)](https://meds-notifier.vercel.app/)
-[![Issues](https://img.shields.io/badge/🐛_Report-Issues-red?style=for-the-badge)](https://github.com/yourusername/meds-notifier/issues)
-[![Discussions](https://img.shields.io/badge/💬_Join-Discussions-green?style=for-the-badge)](https://github.com/yourusername/meds-notifier/discussions)
+[![Website](https://img.shields.io/badge/🌐_Visit-Website-blue?style=for-the-badge)](https://my-frontend-portfolio-sage.vercel.app/)
+[![Issues](https://img.shields.io/badge/🐛_Report-Issues-red?style=for-the-badge)](https://github.com/mohamed-samir-dev/meds-notifier/issues)
+[![Discussions](https://img.shields.io/badge/💬_Join-Discussions-green?style=for-the-badge)](https://github.com/mohamed-samir-dev/meds-notifier/discussions)
 
 </div>
 
