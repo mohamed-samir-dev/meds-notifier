@@ -395,11 +395,52 @@ header h1 {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
 .dashboard-header h2 {
     color: #4a5568;
     font-size: 1.8rem;
     margin: 0;
-    margin-bottom: 30px;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-export, .btn-import {
+    background: #48bb78;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-import {
+    background: #4299e1;
+}
+
+.btn-export:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+.btn-import:hover {
+    background: #3182ce;
+    transform: translateY(-2px);
 }
 
 .stats-grid {
