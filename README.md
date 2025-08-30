@@ -27,6 +27,29 @@ A simple, responsive medication reminder web application with notifications and 
 - **Google Calendar API**: Event creation integration
 - **Font Awesome**: Icons and visual elements
 
+## Project Structure
+
+```
+medication-reminder/
+├── assets/
+│   ├── css/
+│   │   └── style.css          # Main stylesheet
+│   ├── js/
+│   │   └── script.js          # Main JavaScript file
+│   └── images/
+│       ├── screencapture.png  # Desktop screenshot
+│       └── screenshot.png     # Mobile screenshot
+├── docs/
+│   ├── CONTRIBUTING.md        # Contributing guidelines
+│   └── CHANGELOG.md          # Version history
+├── index.html                # Main HTML file
+├── manifest.json            # PWA manifest
+├── service-worker.js        # Service worker for offline support
+├── LICENSE                  # MIT license
+├── README.md               # This file
+└── .gitignore             # Git ignore rules
+```
+
 ## Installation & Setup
 
 1. **Clone the repository**:
