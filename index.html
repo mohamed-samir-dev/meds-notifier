@@ -29,7 +29,16 @@
                 <span class="banner-text">تفعيل الإشعارات للحصول على تذكيرات الأدوية</span>
                 <button class="btn-enable" onclick="medicationApp.enableNotifications()">تفعيل</button>
             </div>
-            
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="dashboard-section hidden">
+                <div class="dashboard-header">
+                    <h2>لوحة التحكم</h2>
+                </div>
+            </section>
+
+            <!-- Medications Section -->
+            <section id="medications-section" class="medications-section">
             <section class="add-medication">
                 <h2>إضافة دواء جديد</h2>
                 <form id="medicationForm">
@@ -69,6 +78,7 @@
                 <div id="medicationsList" class="medications-container">
                     <p class="no-medications">لا توجد أدوية مضافة بعد</p>
                 </div>
+            </section>
             </section>
         </main>
     </div>
