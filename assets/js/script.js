@@ -116,7 +116,12 @@ class MedicationReminder {
     }
 
     saveMedications() {
-        localStorage.setItem('medications', JSON.stringify(this.medications));
+        try {
+            localStorage.setItem('medications', JSON.stringify(this.medications));
+        } catch (error) {
+            console.error('Error saving medications:', error);
+            alert('Error saving data. Please try again.');
+        }
     }
 
     displayMedications() {
