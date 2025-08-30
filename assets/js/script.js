@@ -88,6 +88,11 @@ class MedicationReminder {
         document.getElementById('exportBtn')?.addEventListener('click', () => this.exportData());
         document.getElementById('importBtn')?.addEventListener('click', () => document.getElementById('importFile').click());
         document.getElementById('importFile')?.addEventListener('change', (e) => this.importData(e));
+        
+        document.getElementById('addQuickMed')?.addEventListener('click', () => this.quickAddMedication());
+        document.getElementById('clearExpired')?.addEventListener('click', () => this.clearExpiredMedications());
+        document.getElementById('viewCalendar')?.addEventListener('click', () => this.openGoogleCalendar());
+        document.getElementById('setReminder')?.addEventListener('click', () => this.setGeneralReminder());
     }
 
     addMedication() {
@@ -444,6 +449,51 @@ class MedicationReminder {
             }
         };
         reader.readAsText(file);
+    }
+
+    quickAddMedication() {
+        this.switchSection('medications');
+        document.getElementById('medName').focus();
+    }
+
+    clearExpiredMedications() {
+        const now = new Date();
+        const expiredCount = this.medications.filter(med => new Date(med.datetime) <= now).length;
+        
+        if (expiredCount === 0) {
+            alert('No expired medications to clear!');
+            return;
+        }
+        
+        if (confirm(`Delete ${expiredCount} expired medications?`)) {
+            this.medications = this.medications.filter(med => new Date(med.datetime) > now);
+            this.saveMedications();
+            this.displayMedications();
+            this.updateDashboard();
+            alert(`${expiredCount} expired medications deleted!`);
+        }
+    }
+
+    openGoogleCalendar() {
+        window.open('https://calendar.google.com', '_blank');
+    }
+
+    setGeneralReminder() {
+        if (Notification.permission !== 'granted') {
+            alert('Please enable notifications first!');
+            return;
+        }
+        
+        const time = prompt('Set reminder time (minutes from now):');
+        if (time && !isNaN(time)) {
+            setTimeout(() => {
+                new Notification('Medication Reminder', {
+                    body: 'Don\'t forget to check your medications!',
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23667eea"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'
+                });
+            }, parseInt(time) * 60000);
+            alert(`Reminder set for ${time} minutes!`);
+        }
     }
 }
 
