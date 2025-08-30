@@ -32,7 +32,38 @@ class MedicationReminder {
                 totalMeds: 'إجمالي الأدوية',
                 upcomingMeds: 'الأدوية القادمة',
                 expiredMeds: 'الأدوية المنتهية',
-                todayMeds: 'أدوية اليوم'
+                todayMeds: 'أدوية اليوم',
+                exportData: 'تصدير البيانات',
+                importData: 'استيراد البيانات',
+                statusByChart: 'الأدوية حسب الحالة',
+                weeklyChart: 'الأدوية الأسبوعية',
+                quickActions: 'إجراءات سريعة',
+                addQuickMed: 'إضافة دواء سريع',
+                clearExpired: 'حذف المنتهية',
+                viewCalendar: 'عرض التقويم',
+                setReminder: 'تذكير عام',
+                bannerText: 'تفعيل الإشعارات للحصول على تذكيرات الأدوية',
+                enableBtn: 'تفعيل',
+                medNamePlaceholder: 'مثال: باراسيتامول',
+                dosagePlaceholder: 'مثال: 500 مجم',
+                medNameHelp: 'أدخل اسم الدواء بوضوح',
+                dosageHelp: 'حدد كمية الجرعة',
+                dateHelp: 'اختر تاريخ تناول الدواء',
+                timeHelp: 'حدد وقت تناول الدواء',
+                fillAllFields: 'يرجى ملء جميع الحقول',
+                invalidDateTime: 'تاريخ أو وقت غير صحيح',
+                errorSaving: 'خطأ في حفظ البيانات. يرجى المحاولة مرة أخرى.',
+                noDataAvailable: 'لا توجد بيانات متاحة',
+                dataImported: 'تم استيراد البيانات بنجاح!',
+                invalidFile: 'تنسيق ملف غير صحيح!',
+                errorReading: 'خطأ في قراءة الملف!',
+                noExpiredMeds: 'لا توجد أدوية منتهية الصلاحية للحذف!',
+                deleteConfirm: 'حذف {count} أدوية منتهية الصلاحية؟',
+                expiredDeleted: '{count} أدوية منتهية الصلاحية تم حذفها!',
+                enableNotificationsFirst: 'يرجى تفعيل الإشعارات أولاً!',
+                reminderTimePrompt: 'تحديد وقت التذكير (بالدقائق من الآن):',
+                reminderSet: 'تم تعيين التذكير لـ {time} دقيقة!',
+                generalReminderBody: 'لا تنس فحص أدويتك!'
             },
             en: {
                 title: 'Medication Reminder',
@@ -61,7 +92,38 @@ class MedicationReminder {
                 totalMeds: 'Total Medications',
                 upcomingMeds: 'Upcoming Medications',
                 expiredMeds: 'Expired Medications',
-                todayMeds: 'Today\'s Medications'
+                todayMeds: 'Today\'s Medications',
+                exportData: 'Export Data',
+                importData: 'Import Data',
+                statusByChart: 'Medications by Status',
+                weeklyChart: 'Weekly Medications',
+                quickActions: 'Quick Actions',
+                addQuickMed: 'Add Quick Medication',
+                clearExpired: 'Clear Expired',
+                viewCalendar: 'View Calendar',
+                setReminder: 'Set Reminder',
+                bannerText: 'Enable notifications to get medication reminders',
+                enableBtn: 'Enable',
+                medNamePlaceholder: 'e.g., Paracetamol',
+                dosagePlaceholder: 'e.g., 500mg',
+                medNameHelp: 'Enter medication name clearly',
+                dosageHelp: 'Specify dosage amount',
+                dateHelp: 'Choose medication date',
+                timeHelp: 'Set medication time',
+                fillAllFields: 'Please fill in all fields',
+                invalidDateTime: 'Invalid date or time',
+                errorSaving: 'Error saving data. Please try again.',
+                noDataAvailable: 'No data available',
+                dataImported: 'Data imported successfully!',
+                invalidFile: 'Invalid file format!',
+                errorReading: 'Error reading file!',
+                noExpiredMeds: 'No expired medications to clear!',
+                deleteConfirm: 'Delete {count} expired medications?',
+                expiredDeleted: '{count} expired medications deleted!',
+                enableNotificationsFirst: 'Please enable notifications first!',
+                reminderTimePrompt: 'Set reminder time (minutes from now):',
+                reminderSet: 'Reminder set for {time} minutes!',
+                generalReminderBody: 'Don\'t forget to check your medications!'
             }
         };
         this.currentSection = 'medications';
@@ -117,13 +179,13 @@ class MedicationReminder {
 
         // Validation
         if (!name || !dosage || !date || !time) {
-            alert('Please fill in all fields');
+            alert(this.getCurrentTranslation().fillAllFields);
             return;
         }
 
         const selectedDateTime = new Date(`${date}T${time}`);
         if (isNaN(selectedDateTime.getTime())) {
-            alert('Invalid date or time');
+            alert(this.getCurrentTranslation().invalidDateTime);
             return;
         }
 
@@ -150,7 +212,7 @@ class MedicationReminder {
             localStorage.setItem('medications', JSON.stringify(this.medications));
         } catch (error) {
             console.error('Error saving medications:', error);
-            alert('Error saving data. Please try again.');
+            alert(this.getCurrentTranslation().errorSaving);
         }
     }
 
@@ -326,6 +388,67 @@ class MedicationReminder {
         const dashboardTitle = document.querySelector('.dashboard-header h2');
         if (dashboardTitle) dashboardTitle.textContent = t.dashboard;
         
+        // Update dashboard buttons
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) exportBtn.innerHTML = `<i class="fas fa-download"></i> ${t.exportData}`;
+        
+        const importBtn = document.getElementById('importBtn');
+        if (importBtn) importBtn.innerHTML = `<i class="fas fa-upload"></i> ${t.importData}`;
+        
+        // Update notification banner
+        const bannerText = document.querySelector('.banner-text');
+        if (bannerText) bannerText.textContent = t.bannerText;
+        
+        const enableBtn = document.querySelector('.btn-enable');
+        if (enableBtn) enableBtn.textContent = t.enableBtn;
+        
+        // Update form placeholders and help text
+        const medNameInput = document.getElementById('medName');
+        if (medNameInput) medNameInput.placeholder = t.medNamePlaceholder;
+        
+        const dosageInput = document.getElementById('medDosage');
+        if (dosageInput) dosageInput.placeholder = t.dosagePlaceholder;
+        
+        const helpTexts = {
+            'medName-help': t.medNameHelp,
+            'medDosage-help': t.dosageHelp,
+            'medDate-help': t.dateHelp,
+            'medTime-help': t.timeHelp
+        };
+        
+        Object.entries(helpTexts).forEach(([id, text]) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = text;
+        });
+        
+        // Update dashboard chart titles
+        const chartTitles = document.querySelectorAll('.chart-container h3');
+        if (chartTitles[0]) chartTitles[0].textContent = t.statusByChart;
+        if (chartTitles[1]) chartTitles[1].textContent = t.weeklyChart;
+        
+        // Update quick actions
+        const quickActionsTitle = document.querySelector('.quick-actions h3');
+        if (quickActionsTitle) quickActionsTitle.textContent = t.quickActions;
+        
+        const actionBtns = {
+            'addQuickMed': `<i class="fas fa-plus-circle"></i> ${t.addQuickMed}`,
+            'clearExpired': `<i class="fas fa-trash-alt"></i> ${t.clearExpired}`,
+            'viewCalendar': `<i class="fas fa-calendar"></i> ${t.viewCalendar}`,
+            'setReminder': `<i class="fas fa-bell"></i> ${t.setReminder}`
+        };
+        
+        Object.entries(actionBtns).forEach(([id, html]) => {
+            const btn = document.getElementById(id);
+            if (btn) btn.innerHTML = html;
+        });
+        
+        // Update stat labels
+        const statLabels = document.querySelectorAll('.stat-label');
+        if (statLabels[0]) statLabels[0].textContent = t.totalMeds;
+        if (statLabels[1]) statLabels[1].textContent = t.upcomingMeds;
+        if (statLabels[2]) statLabels[2].textContent = t.expiredMeds;
+        if (statLabels[3]) statLabels[3].textContent = t.todayMeds;
+        
         this.displayMedications();
         this.updateDashboard();
     }
@@ -384,7 +507,7 @@ class MedicationReminder {
             ctx.fillStyle = '#a0aec0';
             ctx.font = '16px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+            ctx.fillText(this.getCurrentTranslation().noDataAvailable, canvas.width / 2, canvas.height / 2);
             return;
         }
         
@@ -462,12 +585,12 @@ class MedicationReminder {
                     this.displayMedications();
                     this.updateDashboard();
                     this.scheduleNotifications();
-                    alert('Data imported successfully!');
+                    alert(this.getCurrentTranslation().dataImported);
                 } else {
-                    alert('Invalid file format!');
+                    alert(this.getCurrentTranslation().invalidFile);
                 }
             } catch (error) {
-                alert('Error reading file!');
+                alert(this.getCurrentTranslation().errorReading);
             }
         };
         reader.readAsText(file);
@@ -483,16 +606,16 @@ class MedicationReminder {
         const expiredCount = this.medications.filter(med => new Date(med.datetime) <= now).length;
         
         if (expiredCount === 0) {
-            alert('No expired medications to clear!');
+            alert(this.getCurrentTranslation().noExpiredMeds);
             return;
         }
         
-        if (confirm(`Delete ${expiredCount} expired medications?`)) {
+        if (confirm(this.getCurrentTranslation().deleteConfirm.replace('{count}', expiredCount))) {
             this.medications = this.medications.filter(med => new Date(med.datetime) > now);
             this.saveMedications();
             this.displayMedications();
             this.updateDashboard();
-            alert(`${expiredCount} expired medications deleted!`);
+            alert(this.getCurrentTranslation().expiredDeleted.replace('{count}', expiredCount));
         }
     }
 
@@ -502,19 +625,19 @@ class MedicationReminder {
 
     setGeneralReminder() {
         if (Notification.permission !== 'granted') {
-            alert('Please enable notifications first!');
+            alert(this.getCurrentTranslation().enableNotificationsFirst);
             return;
         }
         
-        const time = prompt('Set reminder time (minutes from now):');
+        const time = prompt(this.getCurrentTranslation().reminderTimePrompt);
         if (time && !isNaN(time)) {
             setTimeout(() => {
-                new Notification('Medication Reminder', {
-                    body: 'Don\'t forget to check your medications!',
+                new Notification(this.getCurrentTranslation().notificationTitle, {
+                    body: this.getCurrentTranslation().generalReminderBody,
                     icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23667eea"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'
                 });
             }, parseInt(time) * 60000);
-            alert(`Reminder set for ${time} minutes!`);
+            alert(this.getCurrentTranslation().reminderSet.replace('{time}', time));
         }
     }
 }
