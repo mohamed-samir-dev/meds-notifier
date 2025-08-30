@@ -187,8 +187,19 @@ class MedicationReminder {
     }
 
     async requestNotificationPermission() {
-        if ('Notification' in window && Notification.permission === 'default') {
-            await Notification.requestPermission();
+        if ('Notification' in window) {
+            if (Notification.permission === 'default') {
+                const banner = document.getElementById('notificationBanner');
+                banner.classList.remove('hidden');
+            }
+        }
+    }
+
+    async enableNotifications() {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            document.getElementById('notificationBanner').classList.add('hidden');
+            this.scheduleNotifications();
         }
     }
 
