@@ -117,6 +117,7 @@ class MedicationReminder {
         this.medications.push(medication);
         this.saveMedications();
         this.displayMedications();
+        this.updateDashboard();
         this.scheduleNotifications();
         document.getElementById('medicationForm').reset();
     }
@@ -188,6 +189,7 @@ class MedicationReminder {
         this.medications = this.medications.filter(med => med.id !== id);
         this.saveMedications();
         this.displayMedications();
+        this.updateDashboard();
     }
 
     addToGoogleCalendar(id) {
@@ -308,6 +310,29 @@ class MedicationReminder {
         
         document.getElementById('dashboard-section').classList.toggle('hidden', section !== 'dashboard');
         document.getElementById('medications-section').classList.toggle('hidden', section !== 'medications');
+        
+        if (section === 'dashboard') {
+            this.updateDashboard();
+        }
+    }
+
+    updateDashboard() {
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+        
+        const totalMeds = this.medications.length;
+        const upcomingMeds = this.medications.filter(med => new Date(med.datetime) > now).length;
+        const expiredMeds = this.medications.filter(med => new Date(med.datetime) <= now).length;
+        const todayMeds = this.medications.filter(med => {
+            const medDate = new Date(med.datetime);
+            return medDate >= today && medDate < tomorrow;
+        }).length;
+        
+        document.getElementById('totalMeds').textContent = totalMeds;
+        document.getElementById('upcomingMeds').textContent = upcomingMeds;
+        document.getElementById('expiredMeds').textContent = expiredMeds;
+        document.getElementById('todayMeds').textContent = todayMeds;
     }
 }
 
