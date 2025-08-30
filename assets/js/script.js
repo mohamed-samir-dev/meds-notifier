@@ -26,7 +26,13 @@ class MedicationReminder {
                 notificationTitle: 'تذكير الدواء',
                 notificationBody: 'حان وقت تناول',
                 enableNotifications: 'تفعيل الإشعارات',
-                days: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+                days: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+                dashboard: 'لوحة التحكم',
+                medications: 'الأدوية',
+                totalMeds: 'إجمالي الأدوية',
+                upcomingMeds: 'الأدوية القادمة',
+                expiredMeds: 'الأدوية المنتهية',
+                todayMeds: 'أدوية اليوم'
             },
             en: {
                 title: 'Medication Reminder',
@@ -49,7 +55,13 @@ class MedicationReminder {
                 notificationTitle: 'Medication Reminder',
                 notificationBody: 'Time to take',
                 enableNotifications: 'Enable Notifications',
-                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                dashboard: 'Dashboard',
+                medications: 'Medications',
+                totalMeds: 'Total Medications',
+                upcomingMeds: 'Upcoming Medications',
+                expiredMeds: 'Expired Medications',
+                todayMeds: 'Today\'s Medications'
             }
         };
         this.init();
@@ -305,7 +317,15 @@ class MedicationReminder {
         if (tabs[1]) tabs[1].textContent = t.upcoming;
         if (tabs[2]) tabs[2].textContent = t.past;
         
+        const navBtns = document.querySelectorAll('.nav-btn');
+        if (navBtns[0]) navBtns[0].innerHTML = `<i class="fas fa-pills"></i> ${t.medications}`;
+        if (navBtns[1]) navBtns[1].innerHTML = `<i class="fas fa-chart-bar"></i> ${t.dashboard}`;
+        
+        const dashboardTitle = document.querySelector('.dashboard-header h2');
+        if (dashboardTitle) dashboardTitle.textContent = t.dashboard;
+        
         this.displayMedications();
+        this.updateDashboard();
     }
 
     getCurrentTranslation() {
