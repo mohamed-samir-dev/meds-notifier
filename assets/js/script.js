@@ -84,6 +84,10 @@ class MedicationReminder {
                 this.switchSection(e.target.dataset.section);
             });
         });
+
+        document.getElementById('exportBtn')?.addEventListener('click', () => this.exportData());
+        document.getElementById('importBtn')?.addEventListener('click', () => document.getElementById('importFile').click());
+        document.getElementById('importFile')?.addEventListener('change', (e) => this.importData(e));
     }
 
     addMedication() {
@@ -400,6 +404,46 @@ class MedicationReminder {
                 </div>
             `;
         }).join('');
+    }
+
+    exportData() {
+        const data = {
+            medications: this.medications,
+            exportDate: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `medications-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.medications && Array.isArray(data.medications)) {
+                    this.medications = data.medications;
+                    this.saveMedications();
+                    this.displayMedications();
+                    this.updateDashboard();
+                    this.scheduleNotifications();
+                    alert('Data imported successfully!');
+                } else {
+                    alert('Invalid file format!');
+                }
+            } catch (error) {
+                alert('Error reading file!');
+            }
+        };
+        reader.readAsText(file);
     }
 }
 
