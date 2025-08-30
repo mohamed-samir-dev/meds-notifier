@@ -1,6 +1,6 @@
 # Medication Reminder 💊
 
-A professional, responsive medication reminder web application with notifications and Google Calendar integration.
+A simple, responsive medication reminder web application with notifications and Google Calendar integration.
 
 ## Features
 
@@ -16,13 +16,6 @@ A professional, responsive medication reminder web application with notification
 ## Demo
 
 🔗 **Live Demo**: [GitHub Pages Link](https://meds-notifier.vercel.app/)
-
-## Screenshots
-
-### Desktop View
-
-![Desktop Screenshot](screencapture-127-0-0-1-5500-index-html-2025-08-15-16_32_25.png)
-
 
 ## Technologies Used
 
