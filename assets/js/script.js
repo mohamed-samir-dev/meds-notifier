@@ -78,6 +78,12 @@ class MedicationReminder {
                 this.filterMedications(e.target.dataset.filter);
             });
         });
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchSection(e.target.dataset.section);
+            });
+        });
     }
 
     addMedication() {
@@ -293,6 +299,15 @@ class MedicationReminder {
 
     getCurrentTranslation() {
         return this.translations[this.isRTL ? 'ar' : 'en'];
+    }
+
+    switchSection(section) {
+        this.currentSection = section;
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-section="${section}"]`).classList.add('active');
+        
+        document.getElementById('dashboard-section').classList.toggle('hidden', section !== 'dashboard');
+        document.getElementById('medications-section').classList.toggle('hidden', section !== 'medications');
     }
 }
 
