@@ -63,7 +63,8 @@ class MedicationReminder {
                 enableNotificationsFirst: 'يرجى تفعيل الإشعارات أولاً!',
                 reminderTimePrompt: 'تحديد وقت التذكير (بالدقائق من الآن):',
                 reminderSet: 'تم تعيين التذكير لـ {time} دقيقة!',
-                generalReminderBody: 'لا تنس فحص أدويتك!'
+                generalReminderBody: 'لا تنس فحص أدويتك!',
+                medicationsTooltip: 'أدوية'
             },
             en: {
                 title: 'Medication Reminder',
@@ -123,7 +124,8 @@ class MedicationReminder {
                 enableNotificationsFirst: 'Please enable notifications first!',
                 reminderTimePrompt: 'Set reminder time (minutes from now):',
                 reminderSet: 'Reminder set for {time} minutes!',
-                generalReminderBody: 'Don\'t forget to check your medications!'
+                generalReminderBody: 'Don\'t forget to check your medications!',
+                medicationsTooltip: 'medications'
             }
         };
         this.currentSection = 'medications';
@@ -549,7 +551,7 @@ class MedicationReminder {
             const height = (count / maxCount) * 150;
             return `
                 <div class="day-bar">
-                    <div class="bar" style="height: ${height}px" title="${count} medications"></div>
+                    <div class="bar" style="height: ${height}px" title="${count} ${this.getCurrentTranslation().medicationsTooltip}"></div>
                     <div class="day-label">${days[index].substring(0, 3)}</div>
                 </div>
             `;
