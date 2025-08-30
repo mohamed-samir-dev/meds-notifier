@@ -81,10 +81,22 @@ class MedicationReminder {
     }
 
     addMedication() {
-        const name = document.getElementById('medName').value;
-        const dosage = document.getElementById('medDosage').value;
+        const name = document.getElementById('medName').value.trim();
+        const dosage = document.getElementById('medDosage').value.trim();
         const date = document.getElementById('medDate').value;
         const time = document.getElementById('medTime').value;
+
+        // Validation
+        if (!name || !dosage || !date || !time) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        const selectedDateTime = new Date(`${date}T${time}`);
+        if (isNaN(selectedDateTime.getTime())) {
+            alert('Invalid date or time');
+            return;
+        }
 
         const medication = {
             id: Date.now(),
@@ -92,7 +104,7 @@ class MedicationReminder {
             dosage,
             date,
             time,
-            datetime: new Date(`${date}T${time}`),
+            datetime: selectedDateTime,
             notified: false
         };
 
